@@ -242,6 +242,29 @@
   .skill-group .glabel::before { content: "// "; color: var(--ink-faint); }
   .skill-group .tag-row .tag { background: var(--bg-panel); }
 
+  /* ---- Projects ---- */
+  .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 700px) { .project-grid { grid-template-columns: 1fr; } }
+  .project-card {
+    position: relative; background: var(--bg-panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px 24px; display: flex; flex-direction: column;
+  }
+  .project-card::before, .project-card::after {
+    content: ""; position: absolute; width: 12px; height: 12px; border-color: var(--line-strong); border-style: solid;
+  }
+  .project-card::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+  .project-card::after { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+  .project-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+  .project-title { font-family: var(--font-display); font-weight: 700; font-size: var(--s1); }
+  .project-link {
+    font-family: var(--font-mono); font-size: var(--s-1); color: var(--ink-soft);
+    text-decoration: none; border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 4px 9px; white-space: nowrap; flex: none;
+  }
+  .project-link:hover { color: var(--accent); border-color: var(--accent); }
+  .project-desc { color: var(--ink); font-size: var(--s-1); margin: 0 0 16px; flex-grow: 1; }
+  .project-card .tag-row { margin-top: auto; }
+
   /* ---- Credentials ---- */
   .cred-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   @media (max-width: 620px) { .cred-grid { grid-template-columns: 1fr; } }
@@ -275,6 +298,7 @@
     <nav class="links" aria-label="Section navigation">
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
       <a href="#skills">Skills</a>
       <a href="#credentials">Credentials</a>
       <a href="#contact">Contact</a>
@@ -377,9 +401,58 @@
     </div>
   </section>
 
+  <section id="projects">
+    <div class="wrap reveal">
+      <span class="eyebrow">03 &mdash; Projects</span>
+      <h2>Things I've built on my own time.</h2>
+      <div class="project-grid">
+        <div class="project-card">
+          <div class="project-head">
+            <span class="project-title">Cloud-Native Microservices Platform</span>
+            <a class="project-link" href="https://github.com/saivamsi462000/cloud-native-microservices-platform" target="_blank" rel="noopener">GitHub &#8599;</a>
+          </div>
+          <p class="project-desc">Two Spring Boot services (user-service, notification-service) talking over REST, containerized and deployable to Kubernetes with health checks, service discovery via K8s DNS, and secrets kept out of manifests.</p>
+          <div class="tag-row">
+            <span class="tag">Spring Boot</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span><span class="tag">Kubernetes</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-head">
+            <span class="project-title">Event-Driven Order Service</span>
+            <a class="project-link" href="https://github.com/saivamsi462000/event-driven-order-service" target="_blank" rel="noopener">GitHub &#8599;</a>
+          </div>
+          <p class="project-desc">Order placement API that publishes events to Kafka and projects them into MongoDB via a consumer &mdash; a compact example of the event sourcing / CQRS-lite pattern with Docker Compose for local dev.</p>
+          <div class="tag-row">
+            <span class="tag">Spring Boot</span><span class="tag">Kafka</span><span class="tag">MongoDB</span><span class="tag">Docker Compose</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-head">
+            <span class="project-title">E-Commerce Shopping Platform</span>
+            <a class="project-link" href="https://github.com/saivamsi462000/ecommerce-shopping-platform" target="_blank" rel="noopener">GitHub &#8599;</a>
+          </div>
+          <p class="project-desc">REST API for a product catalog with JWT-based authentication &mdash; register, log in, and manage products behind a stateless Spring Security layer.</p>
+          <div class="tag-row">
+            <span class="tag">Spring Boot</span><span class="tag">Spring Security</span><span class="tag">JWT</span><span class="tag">JPA</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-head">
+            <span class="project-title">Library Management System</span>
+            <a class="project-link" href="https://github.com/saivamsi462000/library-management-system" target="_blank" rel="noopener">GitHub &#8599;</a>
+          </div>
+          <p class="project-desc">Desktop catalog manager built with Java Swing, backed by an embedded H2 database &mdash; add, check out, and delete books through a simple toolbar UI.</p>
+          <div class="tag-row">
+            <span class="tag">Java</span><span class="tag">Swing</span><span class="tag">H2 / JDBC</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="skills">
     <div class="wrap reveal">
-      <span class="eyebrow">03 &mdash; Skills</span>
+      <span class="eyebrow">04 &mdash; Skills</span>
       <h2>Stack &amp; tools.</h2>
 
       <div class="skill-group">
@@ -423,7 +496,7 @@
 
   <section id="credentials">
     <div class="wrap reveal">
-      <span class="eyebrow">04 &mdash; Credentials</span>
+      <span class="eyebrow">05 &mdash; Credentials</span>
       <h2>Education &amp; certification.</h2>
       <div class="cred-grid">
         <div class="cred-card">
@@ -444,7 +517,7 @@
 
   <section id="contact">
     <div class="wrap reveal">
-      <span class="eyebrow">05 &mdash; Contact</span>
+      <span class="eyebrow">06 &mdash; Contact</span>
       <div class="contact-panel">
         <h2>Let's talk.</h2>
         <p>Open to new opportunities in the United States, on-site or hybrid. The fastest way to reach me is LinkedIn or a call.</p>
