@@ -778,10 +778,9 @@
     var bar = document.getElementById("scrollProgress");
     if (!bar) return;
     function update() {
-      var h = document.documentElement;
-      var scrollTop = h.scrollTop || document.body.scrollTop;
+      var h = document.scrollingElement || document.documentElement;
       var height = h.scrollHeight - h.clientHeight;
-      bar.style.width = (height > 0 ? (scrollTop / height) * 100 : 0) + "%";
+      bar.style.width = (height > 0 ? (h.scrollTop / height) * 100 : 0) + "%";
     }
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
