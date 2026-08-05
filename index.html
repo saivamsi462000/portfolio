@@ -958,6 +958,8 @@
     var contactLine = "Email: " + link("mailto:" + KB.email, KB.email) + "<br>Phone: " + link(telHref, KB.phone) + "<br>LinkedIn: " + link(KB.linkedin, "linkedin.com/in/sai-vamsi-ch");
 
     var intents = [
+      { id: "name", kw: ["full name", "his name", "what is his name", "what's his name", "real name", "whats his name", "name"],
+        a: "His full name is <strong>" + KB.name + "</strong> &mdash; he goes by Gopi." },
       { id: "contact", kw: ["contact", "email", "e-mail", "mail", "phone", "number", "call", "reach", "get in touch", "message him"],
         a: "You can reach Gopi directly:<br>" + contactLine },
       { id: "linkedin", kw: ["linkedin", "li profile", "connect with"],
@@ -1018,12 +1020,22 @@
 
     var fallback = "I don't have a specific answer for that, but I can tell you about Gopi's experience, skills, projects, education, or how to reach him. You can also contact him directly:<br>" + contactLine;
 
+    function escapeRegExp(s) {
+      return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    intents.forEach(function (intent) {
+      intent.re = intent.kw.map(function (kw) {
+        var pattern = kw.split(" ").map(escapeRegExp).join("\\s+");
+        return new RegExp("\\b" + pattern + "\\b", "i");
+      });
+    });
+
     function matchIntent(text) {
-      var t = " " + text.toLowerCase() + " ";
       for (var i = 0; i < intents.length; i++) {
-        var kws = intents[i].kw;
-        for (var j = 0; j < kws.length; j++) {
-          if (t.indexOf(kws[j]) !== -1) return intents[i].a;
+        var res = intents[i].re;
+        for (var j = 0; j < res.length; j++) {
+          if (res[j].test(text)) return intents[i].a;
         }
       }
       return fallback;
