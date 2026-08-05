@@ -411,6 +411,100 @@
   @media (hover: none), (pointer: coarse) {
     .cursor-dot, .cursor-ring { display: none; }
   }
+
+  /* ---- Chatbot ---- */
+  .chat-toggle {
+    position: fixed; right: 24px; bottom: 24px; z-index: 60;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--accent); color: var(--accent-ink); border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 10px 24px -8px var(--shadow);
+    transition: transform 0.2s ease;
+  }
+  .chat-toggle:hover { transform: scale(1.06); }
+  .chat-toggle svg { width: 24px; height: 24px; }
+  .chat-toggle .chat-ping {
+    position: absolute; top: -3px; right: -3px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--amber); border: 2px solid var(--bg);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .chat-toggle .chat-ping { animation: pulse 2.4s ease-in-out infinite; }
+  }
+
+  .chat-panel {
+    position: fixed; right: 24px; bottom: 92px; z-index: 60;
+    width: 360px; max-width: calc(100vw - 32px);
+    height: 480px; max-height: calc(100vh - 140px);
+    background: var(--bg-panel); border: 1px solid var(--line); border-radius: 8px;
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: 0 24px 48px -16px var(--shadow);
+    opacity: 0; transform: translateY(16px) scale(0.98); pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .chat-panel.is-open { opacity: 1; transform: none; pointer-events: auto; }
+
+  .chat-head {
+    display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+    border-bottom: 1px solid var(--line); background: var(--bg-panel-2); flex: none;
+  }
+  .chat-head .chat-avatar {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--accent);
+    color: var(--accent-ink); display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 700; font-size: 0.75rem; flex: none;
+  }
+  .chat-head .chat-title { font-family: var(--font-display); font-weight: 700; font-size: var(--s0); }
+  .chat-head .chat-sub { font-family: var(--font-mono); font-size: var(--s-1); color: var(--ink-faint); display: flex; align-items: center; gap: 5px; }
+  .chat-head .chat-sub .status-dot { width: 6px; height: 6px; }
+  .chat-close {
+    margin-left: auto; background: none; border: none; color: var(--ink-soft);
+    cursor: pointer; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    border-radius: 4px; font-size: 16px; line-height: 1;
+  }
+  .chat-close:hover { color: var(--ink); background: var(--bg-panel); }
+
+  .chat-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .chat-msg { max-width: 85%; font-size: var(--s-1); line-height: 1.5; }
+  .chat-msg.bot { align-self: flex-start; }
+  .chat-msg.user { align-self: flex-end; }
+  .chat-msg .bubble { padding: 9px 12px; border-radius: 10px; }
+  .chat-msg.bot .bubble { background: var(--bg-panel-2); border: 1px solid var(--line); color: var(--ink); border-bottom-left-radius: 2px; }
+  .chat-msg.user .bubble { background: var(--accent); color: var(--accent-ink); border-bottom-right-radius: 2px; }
+  .chat-msg .bubble a { color: inherit; text-decoration: underline; }
+  .chat-msg.bot .bubble a { color: var(--accent); }
+
+  .chat-typing { display: flex; gap: 4px; padding: 10px 12px; }
+  .chat-typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-faint); opacity: 0.5; display: inline-block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .chat-typing span { animation: chatTyping 1.2s ease-in-out infinite; }
+    .chat-typing span:nth-child(2) { animation-delay: 0.15s; }
+    .chat-typing span:nth-child(3) { animation-delay: 0.3s; }
+  }
+  @keyframes chatTyping { 0%, 60%, 100% { opacity: 0.35; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+
+  .chat-suggest { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 12px; flex: none; }
+  .chat-suggest button {
+    font-family: var(--font-mono); font-size: var(--s-1); color: var(--ink-soft);
+    background: var(--bg-panel-2); border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 11px; cursor: pointer;
+  }
+  .chat-suggest button:hover { border-color: var(--accent); color: var(--accent); }
+
+  .chat-input-row { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--line); flex: none; }
+  .chat-input-row input {
+    flex: 1; min-width: 0; background: var(--bg-panel-2); border: 1px solid var(--line); border-radius: 6px;
+    padding: 9px 11px; color: var(--ink); font-family: var(--font-body); font-size: var(--s-1);
+  }
+  .chat-input-row input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  .chat-input-row button {
+    background: var(--accent); color: var(--accent-ink); border: none; border-radius: 6px;
+    width: 38px; flex: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .chat-input-row button:hover { opacity: 0.9; }
+
+  @media (max-width: 420px) {
+    .chat-panel { right: 16px; left: 16px; width: auto; bottom: 84px; }
+    .chat-toggle { right: 16px; bottom: 16px; }
+  }
 </style>
 
 <div class="preloader" id="preloader" aria-hidden="true">
@@ -842,6 +936,214 @@
         el.style.transform = "translate(" + (x * 0.25) + "px," + (y * 0.25) + "px)";
       });
       el.addEventListener("mouseleave", function () { el.style.transform = ""; });
+    });
+  })();
+
+  // Chatbot
+  (function () {
+    var KB = {
+      name: "Gopi Satya Sai Vamsi Cheepurupalli",
+      email: "cheepurupallivamsi6@gmail.com",
+      phone: "+1 414-687-4748",
+      location: "Greater Milwaukee, WI",
+      linkedin: "https://www.linkedin.com/in/sai-vamsi-ch-2740621ab/",
+      github: "https://github.com/saivamsi462000"
+    };
+
+    function link(href, text) {
+      return '<a href="' + href + '" target="_blank" rel="noopener">' + text + "</a>";
+    }
+
+    var telHref = "tel:" + KB.phone.replace(/[^+\d]/g, "");
+    var contactLine = "Email: " + link("mailto:" + KB.email, KB.email) + "<br>Phone: " + link(telHref, KB.phone) + "<br>LinkedIn: " + link(KB.linkedin, "linkedin.com/in/sai-vamsi-ch");
+
+    var intents = [
+      { id: "contact", kw: ["contact", "email", "e-mail", "mail", "phone", "number", "call", "reach", "get in touch", "message him"],
+        a: "You can reach Gopi directly:<br>" + contactLine },
+      { id: "linkedin", kw: ["linkedin", "li profile", "connect with"],
+        a: "Here's Gopi's LinkedIn: " + link(KB.linkedin, "linkedin.com/in/sai-vamsi-ch-2740621ab") + " ‚Äî that's the fastest way to connect." },
+      { id: "github", kw: ["github", "git hub", "source code", "repo", "repository", "code samples"],
+        a: "Gopi's GitHub is " + link(KB.github, "github.com/saivamsi462000") + ". He's got 4 real projects up there ‚Äî ask me about ‚Äúprojects‚Äù for details on each." },
+      { id: "resume", kw: ["resume", "cv", "download resume"],
+        a: "There's no PDF download here, but this page covers everything a resume would ‚Äî and Gopi's happy to send one directly. Reach him at " + link("mailto:" + KB.email, KB.email) + "." },
+      { id: "visa", kw: ["visa", "sponsorship", "work authorization", "citizen", "green card"],
+        a: "I don't have work authorization details on hand ‚Äî that's best answered by Gopi directly. Reach him at " + link("mailto:" + KB.email, KB.email) + "." },
+      { id: "salary", kw: ["salary", "compensation", "rate", "pay", "how much"],
+        a: "I don't have compensation info to share here ‚Äî that's a conversation for Gopi directly. Reach him at " + link("mailto:" + KB.email, KB.email) + "." },
+      { id: "exp_capitalone", kw: ["capital one", "capitalone", "current job", "current role", "refinance"],
+        a: "At <strong>Capital One</strong> (Dec 2023 ‚Äì Present, Contract, US Remote) Gopi works on a digital refinance & intelligent document search platform:<br>‚Ä¢ 30% faster failover recovery across 100+ refinance components<br>‚Ä¢ 20% faster document retrieval after a legacy migration<br>‚Ä¢ Shipped 15+ REST APIs<br>Stack: Spring Boot, Kafka, Angular, Elasticsearch, AWS (ECS, S3, CloudFront, IAM), MongoDB, Docker, Jenkins." },
+      { id: "exp_oracle", kw: ["oracle", "procurement", "india", "previous job", "last job", "prior role"],
+        a: "At <strong>Oracle</strong> (Jun 2021 ‚Äì Aug 2023, Full-time, India On-site) Gopi built a Supply Chain Self-Service Procurement platform ‚Äî designing Spring Boot microservices, integrating Kafka for event-driven processing, and building Angular front ends. Stack: Spring Boot, Kafka, Angular, Node.js, Oracle ADF, AWS (EC2, S3, IAM, RDS), MongoDB, Jenkins." },
+      { id: "proj_microservices", kw: ["microservices platform", "kubernetes", "cloud-native", "cloud native"],
+        a: "<strong>Cloud-Native Microservices Platform</strong> ‚Äî two Spring Boot services talking over REST, containerized and deployable to Kubernetes with health checks, service discovery, and secrets kept out of manifests. " + link(KB.github + "/cloud-native-microservices-platform", "View on GitHub") },
+      { id: "proj_orders", kw: ["order service", "event-driven", "event driven", "cqrs"],
+        a: "<strong>Event-Driven Order Service</strong> ‚Äî an order API that publishes events to Kafka and projects them into MongoDB via a consumer, demonstrating event sourcing / CQRS-lite. " + link(KB.github + "/event-driven-order-service", "View on GitHub") },
+      { id: "proj_ecommerce", kw: ["ecommerce", "e-commerce", "shopping platform", "jwt"],
+        a: "<strong>E-Commerce Shopping Platform</strong> ‚Äî a REST API for a product catalog with JWT-based authentication behind a stateless Spring Security layer. " + link(KB.github + "/ecommerce-shopping-platform", "View on GitHub") },
+      { id: "proj_library", kw: ["library management", "library system", "swing"],
+        a: "<strong>Library Management System</strong> ‚Äî a Java Swing desktop app backed by an embedded H2 database for managing a book catalog. " + link(KB.github + "/library-management-system", "View on GitHub") },
+      { id: "education", kw: ["education", "degree", "university", "masters", "master's", "school", "college", "uwm", "wisconsin"],
+        a: "Gopi holds a <strong>Master's in Information Science &amp; Technology</strong> from the University of Wisconsin‚ÄìMilwaukee (Sep 2023 ‚Äì Dec 2024)." },
+      { id: "certification", kw: ["certification", "certified", "cert", "aws certified"],
+        a: "Gopi holds the <strong>AWS Certified Developer ‚Äì Associate (DVA-C02)</strong>, completed July 2025 via a LinkedIn Learning cert-prep course." },
+      { id: "location", kw: ["location", "based", "live", "city", "milwaukee", "where is he", "where does he"],
+        a: "Gopi is based in " + KB.location + " and is open to on-site or hybrid roles across the US." },
+      { id: "availability", kw: ["available", "open to work", "hiring", "looking for", "opportunity", "notice period", "start date"],
+        a: "Gopi is currently open to new opportunities in the US, on-site or hybrid. For specifics like notice period or start date, it's best to " + link("mailto:" + KB.email, "ask him directly") + "." },
+      { id: "skills_aws", kw: ["aws", "cloud experience", "devops"],
+        a: "Yes ‚Äî AWS EC2, ECS, S3, CloudFront, IAM, plus Docker, Jenkins, Git, Maven, and Gradle for the broader DevOps toolchain. He also holds the AWS Certified Developer ‚Äì Associate cert." },
+      { id: "skills_kafka", kw: ["kafka", "messaging", "event driven architecture", "event-driven architecture"],
+        a: "Yes ‚Äî Apache Kafka is core to his work at both Capital One and Oracle: producer/consumer models, async messaging, and event-driven service decoupling." },
+      { id: "skills_angular", kw: ["angular", "frontend", "front-end", "front end", "ui development"],
+        a: "Yes ‚Äî Angular, TypeScript, JavaScript, HTML5, and CSS3 for front-end work at both Capital One and Oracle." },
+      { id: "skills_springboot", kw: ["spring boot", "springboot", "spring mvc", "java backend", "backend"],
+        a: "Spring Boot is Gopi's primary backend framework, alongside Spring MVC, JPA/Hibernate, and Java Jersey ‚Äî used to build microservices, RESTful APIs, and distributed/event-driven systems." },
+      { id: "skills_database", kw: ["database", "mongodb", "mongo", "postgres", "postgresql", "mysql", "elasticsearch", "sql"],
+        a: "Yes ‚Äî MongoDB, Oracle, MySQL, PostgreSQL, and Elasticsearch. He's worked with both relational and NoSQL databases across his roles at Capital One and Oracle." },
+      { id: "experience", kw: ["experience", "work history", "career", "jobs", "worked at", "work experience", "professional experience", "employment"],
+        a: "Gopi has ~5 years of experience:<br>‚Ä¢ <strong>Capital One</strong> ‚Äî Java Full Stack Developer, Dec 2023‚ÄìPresent<br>‚Ä¢ <strong>Oracle</strong> ‚Äî Java Full Stack Developer / Application Engineer, Jun 2021‚ÄìAug 2023<br>Ask me ‚ÄúCapital One‚Äù or ‚ÄúOracle‚Äù for details on either role." },
+      { id: "projects", kw: ["projects", "side projects", "personal projects", "portfolio projects", "built"],
+        a: "Gopi has 4 projects on GitHub:<br>‚Ä¢ Cloud-Native Microservices Platform<br>‚Ä¢ Event-Driven Order Service<br>‚Ä¢ E-Commerce Shopping Platform<br>‚Ä¢ Library Management System<br>Ask me about any one by name, or see them all: " + link(KB.github, "github.com/saivamsi462000") },
+      { id: "skills", kw: ["skills", "tech stack", "technologies", "what can you do", "expertise", "stack", "proficient", "programming language"],
+        a: "Gopi's core stack:<br>‚Ä¢ <strong>Languages:</strong> Core Java, JavaScript, TypeScript, Node.js, SQL, C, C++<br>‚Ä¢ <strong>Frameworks:</strong> Spring Boot, Spring MVC, JPA, Hibernate<br>‚Ä¢ <strong>Frontend:</strong> Angular, TypeScript, HTML5, CSS3<br>‚Ä¢ <strong>Databases:</strong> MongoDB, Oracle, MySQL, PostgreSQL, Elasticsearch<br>‚Ä¢ <strong>Messaging:</strong> Apache Kafka<br>‚Ä¢ <strong>Cloud/DevOps:</strong> AWS, Docker, Jenkins, Git<br>Ask about any one of these for more detail." },
+      { id: "about", kw: ["who is", "about gopi", "about him", "tell me about", "summary", "background", "overview", "who are you", "introduce"],
+        a: "Gopi is a Java Full Stack Developer with about 5 years of experience building enterprise-grade, cloud-native applications ‚Äî Spring Boot microservices, event-driven systems on Apache Kafka, and Angular front ends on AWS. He's currently at Capital One and previously worked at Oracle. He's based in " + KB.location + " and " + link(KB.linkedin, "open to new opportunities") + " in the US, on-site or hybrid." },
+      { id: "greeting", kw: ["hi", "hello", "hey", "good morning", "good afternoon", "good evening", "greetings", "yo", "sup"],
+        a: "Hi, I'm Gopi's portfolio assistant. Ask me about his experience, skills, projects, or how to reach him ‚Äî or tap a suggestion below." },
+      { id: "thanks", kw: ["thank you", "thanks", "appreciate", "thx"],
+        a: "You're welcome! Anything else you'd like to know about Gopi?" },
+      { id: "bye", kw: ["bye", "goodbye", "see you", "later"],
+        a: "Thanks for stopping by! Feel free to reach out any time ‚Äî " + link("mailto:" + KB.email, "email") + " or " + link(KB.linkedin, "LinkedIn") + "." }
+    ];
+
+    var fallback = "I don't have a specific answer for that, but I can tell you about Gopi's experience, skills, projects, education, or how to reach him. You can also contact him directly:<br>" + contactLine;
+
+    function matchIntent(text) {
+      var t = " " + text.toLowerCase() + " ";
+      for (var i = 0; i < intents.length; i++) {
+        var kws = intents[i].kw;
+        for (var j = 0; j < kws.length; j++) {
+          if (t.indexOf(kws[j]) !== -1) return intents[i].a;
+        }
+      }
+      return fallback;
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+
+    var toggle = document.createElement("button");
+    toggle.className = "chat-toggle";
+    toggle.type = "button";
+    toggle.setAttribute("aria-label", "Open chat about Gopi");
+    toggle.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span class="chat-ping" aria-hidden="true"></span>';
+
+    var panel = document.createElement("div");
+    panel.className = "chat-panel";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-label", "Chat about Gopi");
+    panel.innerHTML =
+      '<div class="chat-head">' +
+        '<div class="chat-avatar">GC</div>' +
+        '<div><div class="chat-title">Ask about Gopi</div><div class="chat-sub"><span class="status-dot" aria-hidden="true"></span>Instant answers</div></div>' +
+        '<button class="chat-close" type="button" aria-label="Close chat">‚úï</button>' +
+      "</div>" +
+      '<div class="chat-body" id="chatBody" role="log" aria-live="polite"></div>' +
+      '<div class="chat-suggest" id="chatSuggest"></div>' +
+      '<div class="chat-input-row">' +
+        '<input type="text" id="chatInput" placeholder="Ask about skills, experience, contact..." autocomplete="off">' +
+        '<button id="chatSend" type="button" aria-label="Send">' +
+          '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>' +
+        "</button>" +
+      "</div>";
+
+    document.body.appendChild(toggle);
+    document.body.appendChild(panel);
+
+    var chatBody = panel.querySelector("#chatBody");
+    var suggestRow = panel.querySelector("#chatSuggest");
+    var input = panel.querySelector("#chatInput");
+    var sendBtn = panel.querySelector("#chatSend");
+    var closeBtn = panel.querySelector(".chat-close");
+    var suggestions = ["Skills", "Experience", "Projects", "Contact info", "LinkedIn"];
+
+    function addMessage(role, html) {
+      var msg = document.createElement("div");
+      msg.className = "chat-msg " + role;
+      var bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.innerHTML = html;
+      msg.appendChild(bubble);
+      chatBody.appendChild(msg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function renderSuggestions() {
+      suggestRow.innerHTML = "";
+      suggestions.forEach(function (s) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = s;
+        b.addEventListener("click", function () { handleUserMessage(s); });
+        suggestRow.appendChild(b);
+      });
+    }
+
+    function showTyping() {
+      var t = document.createElement("div");
+      t.className = "chat-msg bot";
+      t.id = "chatTypingIndicator";
+      t.innerHTML = '<div class="bubble chat-typing"><span></span><span></span><span></span></div>';
+      chatBody.appendChild(t);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+    function hideTyping() {
+      var t = document.getElementById("chatTypingIndicator");
+      if (t) t.remove();
+    }
+
+    function handleUserMessage(text) {
+      text = (text || "").trim();
+      if (!text) return;
+      addMessage("user", escapeHtml(text));
+      input.value = "";
+      var answer = matchIntent(text);
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      showTyping();
+      setTimeout(function () {
+        hideTyping();
+        addMessage("bot", answer);
+      }, reduced ? 0 : 380);
+    }
+
+    sendBtn.addEventListener("click", function () { handleUserMessage(input.value); });
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); handleUserMessage(input.value); }
+    });
+
+    var opened = false;
+    function openChat() {
+      panel.classList.add("is-open");
+      var ping = toggle.querySelector(".chat-ping");
+      if (ping) ping.remove();
+      if (!opened) {
+        opened = true;
+        addMessage("bot", "Hi, I'm Gopi's portfolio assistant. I can answer questions about his experience, skills, projects, and how to reach him ‚Äî instantly and accurately, straight from his resume. Try a suggestion below or type your own question.");
+        renderSuggestions();
+      }
+      setTimeout(function () { input.focus(); }, 260);
+    }
+    function closeChat() { panel.classList.remove("is-open"); }
+
+    toggle.addEventListener("click", function () {
+      if (panel.classList.contains("is-open")) closeChat(); else openChat();
+    });
+    closeBtn.addEventListener("click", closeChat);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && panel.classList.contains("is-open")) closeChat();
     });
   })();
 </script>
