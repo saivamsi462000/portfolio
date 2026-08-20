@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://saivamsi462000.github.io/portfolio/sitemap.xml
