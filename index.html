@@ -156,6 +156,14 @@
   .btn-primary { background: var(--ink); color: #141414; }
   .btn-secondary { background: rgba(109,109,110,0.6); color: var(--ink); }
   .btn-secondary:hover { background: rgba(109,109,110,0.8); opacity: 1; }
+  .btn-audio {
+    background: transparent; color: var(--ink); border: 1px solid var(--line-strong);
+  }
+  .btn-audio:hover { border-color: var(--ink); opacity: 1; }
+  .btn-audio.is-playing { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn-audio .audio-icon { font-size: 0.85em; }
+  .btn-audio .audio-tag { font-weight: 500; font-size: 0.72em; color: var(--ink-faint); }
+  .btn-audio.is-playing .audio-tag { color: color-mix(in srgb, var(--accent-ink) 75%, transparent); }
 
   .hero-meta-row {
     display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
@@ -447,6 +455,12 @@
           <div class="hero-cta-row">
             <a class="btn btn-primary" href="https://www.linkedin.com/in/sai-vamsi-ch-2740621ab/" target="_blank" rel="noopener">Connect on LinkedIn</a>
             <a class="btn btn-secondary" href="https://github.com/saivamsi462000" target="_blank" rel="noopener">GitHub &#8599;</a>
+            <button type="button" class="btn btn-audio" id="introAudioBtn" aria-pressed="false">
+              <span class="audio-icon" aria-hidden="true">&#9654;</span>
+              <span class="audio-label">Hear my intro</span>
+              <span class="audio-tag">(AI voice)</span>
+            </button>
+            <audio id="introAudio" src="assets/intro-voice.m4a" preload="none"></audio>
           </div>
           <div class="hero-meta-row">
             <a href="mailto:cheepurupallivamsi6@gmail.com">cheepurupallivamsi6@gmail.com</a>
@@ -717,6 +731,25 @@
 </footer>
 
 <script>
+  // Intro voice play/pause toggle
+  (function () {
+    var btn = document.getElementById("introAudioBtn");
+    var audio = document.getElementById("introAudio");
+    if (!btn || !audio) return;
+    var icon = btn.querySelector(".audio-icon");
+    var label = btn.querySelector(".audio-label");
+    function setPlaying(playing) {
+      btn.classList.toggle("is-playing", playing);
+      btn.setAttribute("aria-pressed", playing ? "true" : "false");
+      icon.innerHTML = playing ? "&#10074;&#10074;" : "&#9654;";
+      label.textContent = playing ? "Playing…" : "Hear my intro";
+    }
+    btn.addEventListener("click", function () {
+      if (audio.paused) { audio.play(); setPlaying(true); }
+      else { audio.pause(); setPlaying(false); }
+    });
+    audio.addEventListener("ended", function () { setPlaying(false); audio.currentTime = 0; });
+  })();
 
   // Scroll-reveal for sections
   (function () {
